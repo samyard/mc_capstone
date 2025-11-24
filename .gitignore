@@ -1,0 +1,14 @@
+.env
+
+*.csv
+*.jsonl
+*.png
+
+__pycache__/
+*.pyc
+
+data/generations/
+data/metadata/
+data/prompts.jsonl
+
+.DS_Store
