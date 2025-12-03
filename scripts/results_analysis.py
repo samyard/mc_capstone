@@ -31,6 +31,7 @@ df['toxicity_change_gpt41'] = df['toxicity_gpt41'] - df['prompt_toxicity']
 df['high_toxicity_gpt4o_mini'] = (df['toxicity_gpt4o_mini'] > 0.5).astype(int)
 df['high_toxicity_gpt4o'] = (df['toxicity_gpt4o'] > 0.5).astype(int)
 df['high_toxicity_gpt41'] = (df['toxicity_gpt41'] > 0.5).astype(int)
+df['prompt_is_toxic'] = (df['prompt_toxicity'] > 0.5)
 
 # save updated dataset
 df.to_csv(os.path.join(OUTPUT_DIR, 'analysis_dataset_final.csv'), index=False)
@@ -174,4 +175,33 @@ plt.title('Figure 4: Average Prompt Word Count by Toxicity Bin', fontsize=12, fo
 plt.grid(axis='y', alpha=0.3)
 plt.tight_layout()
 plt.savefig(os.path.join(OUTPUT_DIR, 'figure4_avg_wordcount_per_bin.png'), dpi=300, bbox_inches='tight')
+plt.show()
+
+# density plot for safe vs toxic prompt lengths
+plt.figure(figsize=(10, 6))
+safe_mask = ~df['prompt_is_toxic']
+toxic_mask = df['prompt_is_toxic']
+if safe_mask.any():
+    sns.kdeplot(
+        df.loc[safe_mask, 'prompt_word_count'],
+        fill=True,
+        label='Safe Prompts (<= 0.5 toxicity)',
+        color='#2ecc71',
+        alpha=0.5
+    )
+if toxic_mask.any():
+    sns.kdeplot(
+        df.loc[toxic_mask, 'prompt_word_count'],
+        fill=True,
+        label='Toxic Prompts (> 0.5 toxicity)',
+        color='#e74c3c',
+        alpha=0.5
+    )
+plt.xlabel('Prompt Word Count', fontsize=11)
+plt.ylabel('Density', fontsize=11)
+plt.title('Figure 5: Prompt Length Density by Safety Classification', fontsize=12, fontweight='bold')
+plt.legend()
+plt.grid(alpha=0.2, linestyle='--')
+plt.tight_layout()
+plt.savefig(os.path.join(OUTPUT_DIR, 'figure5_prompt_length_density.png'), dpi=300, bbox_inches='tight')
 plt.show()
