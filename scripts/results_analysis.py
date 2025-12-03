@@ -1,5 +1,6 @@
 
 
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,8 +10,17 @@ import seaborn as sns
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', 100)
 
-# dataset
+# dataset and output directories
 df = pd.read_csv('/Users/sam/Desktop/capstone/analysis_dataset_clean.csv')
+OUTPUT_DIR = '/Users/sam/Desktop/capstone_results'
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# prompt word count feature
+df['prompt_word_count'] = (
+    df['prompt_text']
+    .fillna('')
+    .apply(lambda text: len(str(text).split()))
+)
 
 # toxicity changes
 df['toxicity_change_gpt4o_mini'] = df['toxicity_gpt4o_mini'] - df['prompt_toxicity']
@@ -23,7 +33,7 @@ df['high_toxicity_gpt4o'] = (df['toxicity_gpt4o'] > 0.5).astype(int)
 df['high_toxicity_gpt41'] = (df['toxicity_gpt41'] > 0.5).astype(int)
 
 # save updated dataset
-df.to_csv('analysis_dataset_final.csv', index=False)
+df.to_csv(os.path.join(OUTPUT_DIR, 'analysis_dataset_final.csv'), index=False)
 print("Feature extraction complete")
 
 
@@ -58,7 +68,7 @@ summary_data = {
 }
 
 summary_table = pd.DataFrame(summary_data)
-summary_table.to_csv('table_toxicity_summary.csv', index=False)
+summary_table.to_csv(os.path.join(OUTPUT_DIR, 'table_toxicity_summary.csv'), index=False)
 print("\nTable 1: Completion Toxicity Summary by Model")
 print(summary_table.round(4))
 
@@ -83,7 +93,7 @@ plt.title('Figure 1B: Toxicity Score Distributions', fontsize=12, fontweight='bo
 plt.axhline(0.5, color='red', linestyle='--', linewidth=1, alpha=0.5, label='High toxicity threshold')
 
 plt.tight_layout()
-plt.savefig('figure1_toxicity_distributions.png', dpi=300, bbox_inches='tight')
+plt.savefig(os.path.join(OUTPUT_DIR, 'figure1_toxicity_distributions.png'), dpi=300, bbox_inches='tight')
 plt.show()
 
 # toxicity change 
@@ -116,5 +126,52 @@ plt.axhline(0, color='black', linestyle='-', linewidth=0.8)
 plt.legend()
 plt.grid(axis='y', alpha=0.3)
 plt.tight_layout()
-plt.savefig('figure2_toxicity_reduction.png', dpi=300, bbox_inches='tight')
+plt.savefig(os.path.join(OUTPUT_DIR, 'figure2_toxicity_reduction.png'), dpi=300, bbox_inches='tight')
+plt.show()
+
+# scatter plot of word count vs. prompt toxicity
+plt.figure(figsize=(10, 6))
+bin_palette = {
+    'low': '#2ecc71',
+    'medium': '#f1c40f',
+    'high': '#e67e22',
+    'very_high': '#e74c3c'
+}
+sns.scatterplot(
+    data=df,
+    x='prompt_word_count',
+    y='prompt_toxicity',
+    hue='toxicity_bin',
+    palette=bin_palette,
+    alpha=0.7,
+    edgecolor='none'
+)
+plt.xlabel('Prompt Word Count', fontsize=11)
+plt.ylabel('Prompt Toxicity Score', fontsize=11)
+plt.title('Figure 3: Word Count vs. Prompt Toxicity', fontsize=12, fontweight='bold')
+plt.legend(title='Toxicity Bin')
+plt.grid(alpha=0.2, linestyle='--')
+plt.tight_layout()
+plt.savefig(os.path.join(OUTPUT_DIR, 'figure3_wordcount_vs_toxicity.png'), dpi=300, bbox_inches='tight')
+plt.show()
+
+# bar chart of mean word count per toxicity bin
+plt.figure(figsize=(8, 6))
+word_count_by_bin = (
+    df.groupby('toxicity_bin')['prompt_word_count']
+    .mean()
+    .reindex(bins_order)
+)
+valid_word_counts = word_count_by_bin.dropna()
+sns.barplot(
+    x=valid_word_counts.index,
+    y=valid_word_counts.values,
+    palette=sns.color_palette('Blues', len(valid_word_counts))
+)
+plt.xlabel('Prompt Toxicity Bin', fontsize=11)
+plt.ylabel('Average Prompt Word Count', fontsize=11)
+plt.title('Figure 4: Average Prompt Word Count by Toxicity Bin', fontsize=12, fontweight='bold')
+plt.grid(axis='y', alpha=0.3)
+plt.tight_layout()
+plt.savefig(os.path.join(OUTPUT_DIR, 'figure4_avg_wordcount_per_bin.png'), dpi=300, bbox_inches='tight')
 plt.show()
