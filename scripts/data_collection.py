@@ -31,7 +31,7 @@ def generate_completion(prompt_text, model):
         response = openai_client.chat.completions.create(
             model=model,
             messages=[{"role": "user", "content": full_prompt}],
-            max_tokens=100,
+            max_tokens=20,
             temperature=1.0,
             n=1
         )
@@ -59,7 +59,7 @@ def process_prompts(input_csv, output_csv,
                    model, start_idx=0, save_frequency=10):
     """generate completions and score toxicity"""
     
-    # Load sampled prompts
+    # load sampled prompts
     df = pd.read_csv(input_csv)
     print(f"Loaded {len(df)} prompts from {input_csv}")
     

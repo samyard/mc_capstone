@@ -1,14 +1,19 @@
+# ignore environment files
 .env
 
+# ignore data files
 *.csv
 *.jsonl
 *.png
 
+# ignore python cache files
 __pycache__/
 *.pyc
 
+# ignore specific data directories (RealPromptToxicity study dir)
 data/generations/
 data/metadata/
 data/prompts.jsonl
 
+# ignore system files
 .DS_Store

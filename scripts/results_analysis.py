@@ -1,5 +1,3 @@
-
-
 import os
 import pandas as pd
 import numpy as np
@@ -204,4 +202,30 @@ plt.legend()
 plt.grid(alpha=0.2, linestyle='--')
 plt.tight_layout()
 plt.savefig(os.path.join(OUTPUT_DIR, 'figure5_prompt_length_density.png'), dpi=300, bbox_inches='tight')
+plt.show()
+
+# prompt vs completion toxicity scatter
+plt.figure(figsize=(10, 7))
+model_specs = [
+    ('GPT-4o-mini', 'toxicity_gpt4o_mini', '#3498db'),
+    ('GPT-4o', 'toxicity_gpt4o', '#e74c3c'),
+    ('GPT-4.1', 'toxicity_gpt41', '#2ecc71')
+]
+for name, col, color in model_specs:
+    sns.scatterplot(
+        data=df,
+        x='prompt_toxicity',
+        y=col,
+        label=name,
+        color=color,
+        alpha=0.55,
+        edgecolor='none'
+    )
+plt.xlabel('Prompt Toxicity', fontsize=11)
+plt.ylabel('Completion Toxicity', fontsize=11)
+plt.title('Figure 6: Prompt vs Completion Toxicity (All Models)', fontsize=12, fontweight='bold')
+plt.legend(title='Model')
+plt.grid(alpha=0.2, linestyle='--')
+plt.tight_layout()
+plt.savefig(os.path.join(OUTPUT_DIR, 'figure6_prompt_vs_completion_all_models.png'), dpi=300, bbox_inches='tight')
 plt.show()
