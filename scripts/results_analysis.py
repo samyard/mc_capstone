@@ -3,14 +3,22 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # row and column limit
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', 100)
 
 # dataset and output directories
-df = pd.read_csv('/Users/sam/Desktop/capstone/analysis_dataset_clean.csv')
-OUTPUT_DIR = '/Users/sam/Desktop/capstone_results'
+PROJECT_ROOT = Path(__file__).parent.parent
+df = pd.read_csv(PROJECT_ROOT / 'analysis_dataset_clean.csv')
+
+# user sets custom output directory via environment variable
+OUTPUT_DIR = os.getenv('RESULTS_DIR', str(PROJECT_ROOT / 'results'))
+OUTPUT_DIR = Path(OUTPUT_DIR)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # prompt word count feature

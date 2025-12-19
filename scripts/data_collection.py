@@ -5,6 +5,7 @@ from googleapiclient import discovery
 import pandas as pd
 import time
 from datetime import datetime
+from pathlib import Path
 
 load_dotenv()
 
@@ -156,7 +157,8 @@ if __name__ == "__main__":
     estimated_time = (n_prompts * 2.5) / 60  # around 2.5 seconds per prompt
     print(f"\nEstimated time: ~{estimated_time:.1f} minutes for {n_prompts} prompts")
     
-    input_csv = '/Users/sam/Desktop/capstone/sampled_prompts.csv'
+    PROJECT_ROOT = Path(__file__).parent
+    input_csv = PROJECT_ROOT / 'sampled_prompts.csv'
 
     '''process_prompts(
     input_csv=input_csv,

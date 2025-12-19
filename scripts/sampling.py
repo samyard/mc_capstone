@@ -1,4 +1,4 @@
-
+from pathlib import Path
 import pandas as pd
 import numpy as np
 import json
@@ -8,7 +8,8 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', 100)
 
 # data path
-data_path = '/Users/sam/Desktop/capstone/data/prompts.jsonl'
+PROJECT_ROOT = Path(__file__).parent
+data_path = PROJECT_ROOT / 'data' / 'prompts.jsonl'
 
 def load_prompts(filepath):
     """load prompts"""

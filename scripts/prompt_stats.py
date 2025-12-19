@@ -2,13 +2,15 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+from pathlib import Path
 
 # seaborn style
 sns.set_style("whitegrid")
 plt.rcParams['figure.figsize'] = (10, 6)
 
 # sample data
-sample_df = pd.read_csv('sampled_prompts.csv')
+PROJECT_ROOT = Path(__file__).parent.parent
+sample_df = pd.read_csv(PROJECT_ROOT / 'sampled_prompts.csv')
 
 # table 1: descriptive statistics by bin
 
