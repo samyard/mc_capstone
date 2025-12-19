@@ -10,10 +10,8 @@
 __pycache__/
 *.pyc
 
-# ignore specific data directories (RealPromptToxicity study dir)
-data/generations/
-data/metadata/
-data/prompts.jsonl
+# allow everything in data folder (REALTOXICITYPROMPTS Study)
+!data/prompts.jsonl
 
 # ignore system files
 .DS_Store
