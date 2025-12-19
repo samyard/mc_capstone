@@ -67,6 +67,54 @@ This adaptive behavior suggests risk based filtering rather than blanket filteri
 └── README.md				# documentation
 ```
 
+## Reproducibility
+
+To use the data collection pipeline on your local machine:
+
+**Prerequisites:**
+- Python 3.8 or higher
+- OpenAI API key (for GPT model access)
+- Google Perspective API key (for toxicity scoring)
+
+**Setup:**
+1. Clone the repository: `git clone https://github.com/samyard/mc_capstone`
+2. Install required packages: `pip install -r requirements.txt`
+3. Create a `.env` file in the project root with your API keys and output dir:
+```
+   OPENAI_API_KEY=your_openai_key_here
+   PERSPECTIVE_API_KEY=your_perspective_key_here
+   # Optional: Specify a custom results directory (defaults to `results/` in project root):
+   RESULTS_DIR=/path/to/your/custom/results/folder
+```
+
+1. **Sample prompts from the dataset:**
+```bash
+   python sampling.py
+```
+   This creates `sampled_prompts.csv` with 347 stratified prompts.
+
+2. **completions and score toxicity:**
+```bash
+   python data_collection.py
+```
+   Returns three result files: `gpt4omini_results.csv`, `gpt4o_results.csv`, and `gpt4.1_results.csv`. This step requires API access and takes approximately 30-45 minutes with rate limiting.
+
+3. **merge results into analysis dataset:**
+```bash
+   python results_merge.py
+```
+   Returns `analysis_dataset_clean.csv` with all model completions merged.
+
+4. **visualizations and summary statistics:**
+```bash
+   python prompt_stats.py
+   python results_analysis.py
+```
+   This produces all figures and statistical tables used in the report.
+
+**Note:** The original RealToxicityPrompts dataset must be downloaded separately from https://github.com/allenai/real-toxicity-prompts and placed in the `data/` directory as `prompts.jsonl`.
+
+
 ## References
 
 ### Primary Source
