@@ -151,15 +151,17 @@ if __name__ == "__main__":
     print("=" * 60)
     print("GPT-4o-mini Toxicity Data Collection Pipeline")
     print("=" * 60)
+
+    PROJECT_ROOT = Path(__file__).parent.parent
+    input_csv = PROJECT_ROOT / 'sampled_prompts.csv'
     
     # time est
-    n_prompts = len(pd.read_csv('/Users/sam/Desktop/capstone/sampled_prompts.csv'))
+    n_prompts = len(pd.read_csv(input_csv))
     estimated_time = (n_prompts * 2.5) / 60  # around 2.5 seconds per prompt
     print(f"\nEstimated time: ~{estimated_time:.1f} minutes for {n_prompts} prompts")
     
-    PROJECT_ROOT = Path(__file__).parent
-    input_csv = PROJECT_ROOT / 'sampled_prompts.csv'
 
+    # uncomment to run individually
     '''process_prompts(
     input_csv=input_csv,
     output_csv='gpt4omini_results.csv',
