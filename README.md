@@ -59,12 +59,11 @@ This adaptive behavior suggests risk based filtering rather than blanket filteri
 │   ├── results_analysis.py             # final data analysis
 │   ├── results_merge.py                # merging of all GPT response results
 │   └── sampling.py                     # stratified sampling prompts
-|
-├── requirements.txt			# all dependencies for study replication
-├── .gitignore				# files / file types for git to ignore
-├── CapstonePresentation_Yard.pptx	# final presentation ppt
-├── FinalReport_Yard.pdf		# final report pdf
-└── README.md				# documentation
+├── requirements.txt                    # all dependencies for study replication
+├── .gitignore                          # files / file types for git to ignore
+├── CapstonePresentation_Yard.pdf       # final presentation pdf
+├── FinalReport_Yard.pdf                # final report pdf
+└── README.md                           # documentation
 ```
 
 ## Reproducibility
