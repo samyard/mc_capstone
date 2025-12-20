@@ -96,7 +96,8 @@ To use the data collection pipeline on your local machine:
 ```bash
    python data_collection.py
 ```
-   Returns three result files: `gpt4omini_results.csv`, `gpt4o_results.csv`, and `gpt4.1_results.csv`. This step requires API access and takes approximately 30-45 minutes with rate limiting.
+
+   **Note:** By default, all three model runs are commented out to prevent accidental execution. Open `scripts/data_collection.py` and uncomment the `process_prompts()` calls for the model you want to run. Returns three respective result files on run: `gpt4omini_results.csv`, `gpt4o_results.csv`, and `gpt4.1_results.csv`. This step requires API access and takes approximately 30-45 minutes with rate limiting.
 
 3. **merge results into analysis dataset:**
 ```bash
